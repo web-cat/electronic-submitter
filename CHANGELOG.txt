@@ -1,0 +1,8 @@
+Web-CAT Electronic Submitter CHANGELOG
+======================================
+
+1.0.0 (2010-03-02)
+------------------
+ * Initial release. This library is a refactoring of the code that was
+   previously part of the Eclipse submitter plug-ins, so that it can be used in
+   other applications and environments.
