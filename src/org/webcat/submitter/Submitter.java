@@ -148,6 +148,7 @@ public class Submitter
      * @param path the path from the root
      * @return the target found at the specified path, or null if one was not
      *     found
+     * @throws SubmissionTargetException if an exception occurs
      */
     public SubmissionTarget getTarget(String path)
     throws SubmissionTargetException

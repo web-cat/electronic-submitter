@@ -64,6 +64,7 @@ public interface ISubmittableItem
      * Gets an input stream from which to read the contents of this item, if
      * {@link #getKind()} is equal to {@link SubmittableItemKind#FILE}.
      *
+     * @return the input stream from which to read the contents of this item
      * @throws IOException if an I/O exception occurred
      */
     InputStream getStream() throws IOException;

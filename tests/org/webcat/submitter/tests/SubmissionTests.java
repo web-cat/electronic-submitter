@@ -55,6 +55,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Initialization done once before all of the test cases in this class run.
+     *
+     * @throws Exception if an exception occurs
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -114,6 +116,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Initialization done before each test case is executed.
+     *
+     * @throws Exception if an exception occurs
      */
     @Before
     public void setUp() throws Exception
@@ -150,6 +154,8 @@ public class SubmissionTests
     /**
      * Tests an empty submission. This should cause
      * {@link NoItemsToSubmitException} to be thrown.
+     *
+     * @throws Exception if an exception occurs
      */
     @Test(expected = NoItemsToSubmitException.class)
     public void submitEmpty() throws Exception
@@ -161,6 +167,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Tests a submission of a single top-level file.
+     *
+     * @throws Exception if an exception occurs
      */
     @Test
     public void submitSingleFile() throws Exception
@@ -175,6 +183,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Tests a submission of a single, empty, top-level folder.
+     *
+     * @throws Exception if an exception occurs
      */
     @Test
     public void submitEmptyDirectory() throws Exception
@@ -189,6 +199,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Tests a submission of a top-level folder containing a file.
+     *
+     * @throws Exception if an exception occurs
      */
     @Test
     public void submitDirectoryWithOneFile() throws Exception
@@ -204,6 +216,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Tests a submission of multiple top-level items.
+     *
+     * @throws Exception if an exception occurs
      */
     @Test
     public void submitMultipleTopLevelItems() throws Exception
@@ -221,6 +235,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Tests a submission with nested folders.
+     *
+     * @throws Exception if an exception occurs
      */
     @Test
     public void submitNestedDirectories() throws Exception
@@ -238,6 +254,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Tests a submission missing a required file.
+     *
+     * @throws Exception if an exception occurs
      */
     @Test(expected = RequiredItemsMissingException.class)
     public void submitMissingRequiredFile() throws Exception
@@ -249,6 +267,8 @@ public class SubmissionTests
     // ----------------------------------------------------------
     /**
      * Tests a submission that has a required file.
+     *
+     * @throws Exception if an exception occurs
      */
     @Test
     public void submitHasRequiredFile() throws Exception

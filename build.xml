@@ -19,41 +19,42 @@
     You should have received a copy of the GNU General Public License along
     with Web-CAT; if not, see <http://www.gnu.org/licenses/>.
 ============================================================================-->
-<project basedir="." default="package" name="org.webcat.submitter">
+<project basedir="." default="package" name="${project.name}">
 
     <!--
         Properties used throughout the build process.
     -->
     <property environment="env" />
+    <property file="build.properties" />
     <property name="debuglevel" value="source,lines,vars" />
     <property name="target" value="1.5" />
     <property name="source" value="1.5" />
 
-    <!-- Update this property with each new release. -->
-    <property name="release.version" value="1.0.0" />
-
-    <property name="release.jar" value="webcat-submitter-${release.version}.jar" />
-    <property name="release.src.zip" value="webcat-submitter-${release.version}-src.zip" />
-    <property name="release.bin.zip" value="webcat-submitter-${release.version}.zip" />
+    <!--
+        Use properties defined in build.properties to construct the release
+        package filenames.
+    -->
+    <property name="release.jar" value="${release.name.prefix}-${release.version}.jar" />
+    <property name="release.src.zip" value="${release.name.prefix}-${release.version}-src.zip" />
+    <property name="release.bin.zip" value="${release.name.prefix}-${release.version}.zip" />
 
 
     <!--
         The classpath used to build the submitter JAR file.
     -->
-    <path id="org.webcat.submitter.classpath">
+    <path id="${project.name}.classpath">
         <pathelement location="bin" />
-        <pathelement location="lib/activation.jar" />
-        <pathelement location="lib/mail.jar" />
+        <pathelement location="lib/**" />
     </path>
 
 
     <!--
         The classpath used to run the included JUnit tests.
     -->
-    <path id="org.webcat.submitter.classpath.tests">
+    <path id="${project.name}.classpath.tests">
         <pathelement location="${env.JUNIT_HOME}/junit.jar" />
         <pathelement location="tests-bin" />
-        <path refid="org.webcat.submitter.classpath" />
+        <path refid="${project.name}.classpath" />
     </path>
 
 
@@ -64,12 +65,6 @@
     <target name="-check-preconditions">
         <condition property="junit-home-set">
             <not><equals arg1="$${env.JUNIT_HOME}" arg2="${env.JUNIT_HOME}" /></not>
-        </condition>
-        <condition property="has-required-libs">
-            <and>
-                <available file="lib/activation.jar" />
-                <available file="lib/mail.jar" />
-            </and>
         </condition>
     </target>
 
@@ -147,19 +142,19 @@
         <javadoc access="protected"
                  author="true"
                  destdir="doc"
-                 doctitle="Web-CAT Electronic Submitter API Specification"
+                 doctitle="${project.title} API Specification"
                  nodeprecated="false"
                  nodeprecatedlist="false"
                  noindex="false"
                  nonavbar="false"
                  notree="false"
-                 packagenames="org.webcat.submitter,org.webcat.submitter.targets"
+                 packagenames="${javadoc.packages}"
                  source="${source}"
                  sourcepath="src"
                  splitindex="true"
                  use="true"
                  version="true">
-            <classpath refid="org.webcat.submitter.classpath" />
+            <classpath refid="${project.name}.classpath" />
             <link href="http://java.sun.com/javase/6/docs/api/" />
         </javadoc>
     </target>
@@ -170,9 +165,13 @@
         tests) of the submitter.
     -->
     <target name="build" depends="-fail-if-no-required-libs, -init">
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+        <javac debug="true"
+               debuglevel="${debuglevel}"
+               destdir="bin"
+               source="${source}"
+               target="${target}">
             <src path="src" />
-            <classpath refid="org.webcat.submitter.classpath" />
+            <classpath refid="${project.name}.classpath" />
         </javac>
     </target>
 
@@ -181,9 +180,13 @@
         Compiles the Java source files for the unit tests in the submitter.
     -->
     <target name="-build-tests" depends="build, -init-tests">
-        <javac debug="true" debuglevel="${debuglevel}" destdir="tests-bin" source="${source}" target="${target}">
+        <javac debug="true"
+               debuglevel="${debuglevel}"
+               destdir="tests-bin"
+               source="${source}"
+               target="${target}">
             <src path="tests" />
-            <classpath refid="org.webcat.submitter.classpath.tests" />
+            <classpath refid="${project.name}.classpath.tests" />
         </javac>
     </target>
 
@@ -193,7 +196,7 @@
     -->
     <target name="test" depends="-fail-if-junit-home-not-set, -build-tests">
         <junit printsummary="on" haltonfailure="on">
-            <classpath refid="org.webcat.submitter.classpath.tests" />
+            <classpath refid="${project.name}.classpath.tests" />
             <formatter type="plain" usefile="false" />
             <batchtest fork="true">
                 <fileset dir="tests">
@@ -210,7 +213,7 @@
     <target name="package" depends="build">
         <jar destfile="${release.jar}">
             <manifest>
-                <attribute name="Main-Class" value="org.webcat.submitter.Main" />
+                <attribute name="Main-Class" value="${main.classname}" />
                 <attribute name="Class-Path" value="." />
             </manifest>
 

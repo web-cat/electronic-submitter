@@ -51,6 +51,8 @@ public class TargetParsingTests
     // ----------------------------------------------------------
     /**
      * Initialization done once before all of the test cases in this class run.
+     *
+     * @throws Exception if an exception occurs
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception

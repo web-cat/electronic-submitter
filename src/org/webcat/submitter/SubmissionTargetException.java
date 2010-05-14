@@ -45,6 +45,7 @@ public class SubmissionTargetException extends IOException
      */
     protected SubmissionTargetException()
     {
+        // Does nothing.
     }
 
 
@@ -58,11 +59,28 @@ public class SubmissionTargetException extends IOException
      */
     public SubmissionTargetException(Throwable cause)
     {
-        super(cause);
+        this.cause = cause;
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Returns the cause of this Throwable.
+     *
+     * @return the cause of this throwable
+     */
+    @Override
+    public Throwable getCause()
+    {
+        return cause;
     }
 
 
     //~ Static/instance variables .............................................
+
+    private Throwable cause;
 
     private static final long serialVersionUID = 1L;
 }

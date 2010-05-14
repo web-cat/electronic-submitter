@@ -63,7 +63,7 @@ public class Main
      * The main entry point for the application.
      *
      * @param args the command line arguments
-     * @throws MalformedURLException
+     * @throws IOException
      */
     public static void main(String[] args) throws IOException
     {
@@ -77,7 +77,7 @@ public class Main
      * The main logic for the application.
      *
      * @param args the command line arguments
-     * @throws MalformedURLException
+     * @throws IOException
      */
     public void run(List<String> args) throws IOException
     {

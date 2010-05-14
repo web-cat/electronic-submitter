@@ -225,6 +225,7 @@ public class SubmissionManifest
      * package, once any parameter placeholders have been resolved.
      *
      * @return the URL to submit the package to
+     * @throws SubmissionTargetException if an exception occurs
      */
     public URI getResolvedTransport() throws SubmissionTargetException
     {
@@ -249,6 +250,7 @@ public class SubmissionManifest
      * useful for logging.
      *
      * @return the URL to submit the package to
+     * @throws SubmissionTargetException if an exception occurs
      */
     public URI getResolvedTransportWithoutPassword()
     throws SubmissionTargetException

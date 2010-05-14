@@ -61,6 +61,7 @@ public class SubmissionParserErrorHandler implements ErrorHandler
      */
     public void warning(SAXParseException e)
     {
+        // Do nothing.
     }
 
 

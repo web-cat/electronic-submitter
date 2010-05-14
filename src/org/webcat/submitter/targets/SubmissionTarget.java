@@ -604,6 +604,7 @@ public abstract class SubmissionTarget
      *
      * @return an array of SubmissionTargets that represent the logical
      *     children of the node
+     * @throws SubmissionTargetException if an exception occurs
      */
     public SubmissionTarget[] getLogicalChildren()
     throws SubmissionTargetException
@@ -953,6 +954,7 @@ public abstract class SubmissionTarget
      * Parses a packager param element and initializes the appropriate fields.
      *
      * @param node the XML node representing the param element
+     * @param task the long-running task to run under
      * @throws SubmissionTargetException if there are any parsing errors
      */
     protected void parsePackagerParameter(Node node, ILongRunningTask task)
@@ -1031,6 +1033,7 @@ public abstract class SubmissionTarget
      *
      * @param node the XML node representing the file pattern element
      * @param task the long-running task to run under
+     * @return the file pattern
      * @throws SubmissionTargetException if there are any parsing errors
      */
     protected String parseFilePattern(Node node, ILongRunningTask task)
