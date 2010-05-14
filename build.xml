@@ -66,6 +66,12 @@
         <condition property="junit-home-set">
             <not><equals arg1="$${env.JUNIT_HOME}" arg2="${env.JUNIT_HOME}" /></not>
         </condition>
+        <condition property="has-required-libs">
+            <and>
+                <available file="lib/activation.jar" />
+                <available file="lib/mail.jar" />
+            </and>
+        </condition>
     </target>
 
 
