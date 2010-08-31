@@ -105,14 +105,26 @@ public class Submitter
 
     // ----------------------------------------------------------
     /**
+     * <p>
      * Sets the long running task manager to be used by this submitter.
+     * </p><p>
+     * You may pass <code>null</code> to this method as a shortcut to revert
+     * to the default long running task manager.
+     * </p>
      *
      * @param manager the long running task manager to be used by this
      *     submitter
      */
     public void setLongRunningTaskManager(ILongRunningTaskManager manager)
     {
-        taskManager = manager;
+    	if (manager == null)
+    	{
+    		taskManager = new DefaultLongRunningTaskManager();
+    	}
+    	else
+    	{
+    		taskManager = manager;
+    	}
     }
 
 

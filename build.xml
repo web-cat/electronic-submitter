@@ -140,6 +140,24 @@
     </target>
 
 
+	<!--
+	    Generates HTML readme and changelog files from the Markdown
+	    formatted text files.
+	-->
+	<target name="markdown">
+		<apply executable="perl"
+			   output="README.html">
+			<arg file="${markdown.path}"/>
+			<fileset file="README.txt"/>
+		</apply>
+		<apply executable="perl"
+			   output="CHANGELOG.html">
+			<arg file="${markdown.path}"/>
+			<fileset file="CHANGELOG.txt"/>
+		</apply>
+	</target>
+
+
     <!--
         Generates the Javadoc files for this library in the "doc" folder
         underneath the project.

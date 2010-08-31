@@ -23,11 +23,11 @@ package org.webcat.submitter;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.webcat.submitter.targets.AssignmentTarget;
 import org.webcat.submitter.targets.SubmissionTarget;
 

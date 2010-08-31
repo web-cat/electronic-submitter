@@ -1,13 +1,21 @@
-Web-CAT Electronic Submitter CHANGELOG
-======================================
+Web-CAT Electronic Submitter Version History
+============================================
 
-1.0.1 (2010-05-14)
-------------------
+1.0.2 (2010-08-27):
+
+ * Internal change: Calling `Submitter.setLongRunningTaskManager()` with a
+   `null` argument is now a shortcut that reverts that instance of the
+   submitter to the default long-running task behavior.
+
+
+1.0.1 (2010-05-14):
+
  * Internal change: Removed a reference to a chained exception constructor so
    that the submitter is source-compatible with Java 1.5, not just Java 1.6.
 
-1.0.0 (2010-03-02)
-------------------
+
+1.0.0 (2010-03-02):
+
  * Initial release. This library is a refactoring of the code that was
    previously part of the Eclipse submitter plug-ins, so that it can be used in
    other applications and environments.
