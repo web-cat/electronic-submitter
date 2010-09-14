@@ -53,7 +53,7 @@ public class MockProtocol implements IProtocol
 
         try
         {
-            params.packageContentsIntoStream(stream, task);
+            params.packageContentsIntoStream(stream, task, null);
         }
         catch (SubmissionTargetException e)
         {

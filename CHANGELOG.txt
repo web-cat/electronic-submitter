@@ -1,11 +1,17 @@
 Web-CAT Electronic Submitter Version History
 ============================================
 
-1.0.2 (2010-08-27):
+1.0.2 (2010-09-14):
 
  * Internal change: Calling `Submitter.setLongRunningTaskManager()` with a
    `null` argument is now a shortcut that reverts that instance of the
    submitter to the default long-running task behavior.
+
+ * Added the ability to add arbitrary parameters to a `SubmissionManifest`
+   using the `getParameter` and `setParameter` methods. These parameters can
+   be recalled in transport URLs and transport parameters using the same
+   `${x}` syntax that has previously been used for usernames, passwords, and
+   assignment names.
 
 
 1.0.1 (2010-05-14):

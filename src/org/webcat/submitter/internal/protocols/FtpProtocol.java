@@ -49,12 +49,12 @@ public class FtpProtocol implements IProtocol
     public void submit(SubmissionManifest manifest, ILongRunningTask task)
     throws IOException
     {
-        URL url = manifest.getResolvedTransport().toURL();
+        URL url = manifest.getResolvedTransport(null).toURL();
 
         URLConnection connection = url.openConnection();
         OutputStream outStream = connection.getOutputStream();
 
-        manifest.packageContentsIntoStream(outStream, task);
+        manifest.packageContentsIntoStream(outStream, task, null);
 
         outStream.close();
     }

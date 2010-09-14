@@ -81,7 +81,7 @@ public class MailtoProtocol implements IProtocol
         File zipFile = File.createTempFile("submitter_", ".zip");
         FileOutputStream outStream = new FileOutputStream(zipFile);
 
-        manifest.packageContentsIntoStream(outStream, task);
+        manifest.packageContentsIntoStream(outStream, task, null);
 
         outStream.close();
 
@@ -126,12 +126,12 @@ public class MailtoProtocol implements IProtocol
                 message.setFrom();
             }
 
-            URI transport = manifest.getResolvedTransport();
+            URI transport = manifest.getResolvedTransport(null);
 
             String to = manifest.resolveParameters(transport
-                    .getSchemeSpecificPart());
+                    .getSchemeSpecificPart(), null);
             String subject = manifest.resolveParameters(asmt
-                    .getTransportParameters().get("subject"));
+                    .getTransportParameters().get("subject"), null);
 
             message.setRecipients(Message.RecipientType.TO, InternetAddress
                     .parse(to));
@@ -149,7 +149,8 @@ public class MailtoProtocol implements IProtocol
                 Map.Entry<String, String> entry = it.next();
                 String paramName = entry.getKey();
                 String paramValue = entry.getValue();
-                String convertedValue = manifest.resolveParameters(paramValue);
+                String convertedValue = manifest.resolveParameters(
+                		paramValue, null);
 
                 if (paramName.startsWith("$file."))
                 {

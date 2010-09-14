@@ -50,14 +50,14 @@ public class FileProtocol implements IProtocol
     public void submit(SubmissionManifest manifest, ILongRunningTask task)
     throws IOException
     {
-        URL url = manifest.getResolvedTransport().toURL();
+        URL url = manifest.getResolvedTransport(null).toURL();
 
         String path = url.getFile();
         path = URLDecoder.decode(path, "utf-8");
 
         FileOutputStream outStream = new FileOutputStream(path);
 
-        manifest.packageContentsIntoStream(outStream, task);
+        manifest.packageContentsIntoStream(outStream, task, null);
 
         outStream.close();
     }

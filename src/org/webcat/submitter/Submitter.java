@@ -374,7 +374,11 @@ public class Submitter
             throw new RequiredItemsMissingException(missingItemPatterns);
         }
 
-        URI transport = manifest.getResolvedTransport();
+        // It doesn't actually matter what encoder we use here, since we're
+        // only getting the URI in order to strip off the scheme and determine
+        // which transport protocol to use.
+
+        URI transport = manifest.getResolvedTransport(null);
 
         final IProtocol protocol =
                 ProtocolRegistry.getInstance().createProtocolInstance(

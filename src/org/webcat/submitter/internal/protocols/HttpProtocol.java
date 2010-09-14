@@ -31,7 +31,9 @@ import java.util.Map;
 import java.util.Set;
 import org.webcat.submitter.ILongRunningTask;
 import org.webcat.submitter.IProtocol;
+import org.webcat.submitter.IStringEncoder;
 import org.webcat.submitter.SubmissionManifest;
+import org.webcat.submitter.URLStringEncoder;
 import org.webcat.submitter.internal.utility.MultipartBuilder;
 import org.webcat.submitter.targets.AssignmentTarget;
 
@@ -56,7 +58,9 @@ public class HttpProtocol implements IProtocol
     public void submit(SubmissionManifest manifest, ILongRunningTask task)
     throws IOException
     {
-        URL url = manifest.getResolvedTransport().toURL();
+    	IStringEncoder encoder = new URLStringEncoder();
+
+        URL url = manifest.getResolvedTransport(encoder).toURL();
 
         HttpURLConnection connection =
             (HttpURLConnection) url.openConnection();
@@ -73,7 +77,8 @@ public class HttpProtocol implements IProtocol
             Map.Entry<String, String> entry = it.next();
             String paramName = entry.getKey();
             String paramValue = entry.getValue();
-            String convertedValue = manifest.resolveParameters(paramValue);
+            String convertedValue = manifest.resolveParameters(
+            		paramValue, null);
 
             if (paramName.startsWith("$file."))
             {
@@ -81,7 +86,7 @@ public class HttpProtocol implements IProtocol
                 OutputStream outStream = multipart.beginWriteFile(key,
                         convertedValue, "application/octet-stream");
 
-                manifest.packageContentsIntoStream(outStream, task);
+                manifest.packageContentsIntoStream(outStream, task, null);
 
                 multipart.endWriteFile();
             }
