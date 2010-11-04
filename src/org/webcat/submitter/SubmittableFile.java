@@ -85,7 +85,7 @@ public class SubmittableFile implements ISubmittableItem
 
             if (parentName.length() > 0)
             {
-                parentName += File.separator;
+                parentName += "/";
             }
 
             return parentName + file.getName();

@@ -1,6 +1,17 @@
 Web-CAT Electronic Submitter Version History
 ============================================
 
+1.0.3 (2010-11-04):
+
+ * Internal change: SubmittableFile.getFilename() now always returns a
+   relative path separated by "/" characters instead of the platform-
+   dependent path separator.
+
+ * The submitter no longer validates the submission targets with the
+   XML schema, so that new attributes can be added by grading servers
+   without breaking it for users who have older versions of the plug-in.
+
+
 1.0.2 (2010-09-14):
 
  * Internal change: Calling `Submitter.setLongRunningTaskManager()` with a

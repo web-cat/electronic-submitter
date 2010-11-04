@@ -258,17 +258,10 @@ public class Submitter
                     DocumentBuilderFactory factory =
                         DocumentBuilderFactory.newInstance();
 
-                    URL schemaUrl = getClass().getResource(
-                            "submission-targets.xsd");
-
                     factory.setIgnoringComments(true);
                     factory.setCoalescing(false);
                     factory.setNamespaceAware(true);
-                    factory.setValidating(true);
-                    factory.setAttribute(SCHEMA_LANGUAGE_ATTR,
-                            "http://www.w3.org/2001/XMLSchema");
-                    factory.setAttribute(SCHEMA_SOURCE_ATTR,
-                            schemaUrl.toString());
+                    factory.setValidating(false);
 
                     SubmissionParserErrorHandler errorHandler =
                             new SubmissionParserErrorHandler();
@@ -516,14 +509,4 @@ public class Submitter
 
     /* Used to manage progress notifications for long-running tasks. */
     private ILongRunningTaskManager taskManager;
-
-    /* The name of the attribute for the XML parser that denotes what language
-       the schema is written in. */
-    private static final String SCHEMA_LANGUAGE_ATTR =
-        "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
-
-    /* The name of the attribute for the XML parser that denotes the URL at
-       which the schema can be found. */
-    private static final String SCHEMA_SOURCE_ATTR =
-        "http://java.sun.com/xml/jaxp/properties/schemaSource";
 }
