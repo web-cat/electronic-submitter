@@ -112,24 +112,7 @@ public class AssignmentGroupTarget extends SubmissionTarget
     {
         startSubtaskForChildNodes(parentNode, task);
 
-        Node nameNode = parentNode.getAttributes().getNamedItem(
-                Xml.Attributes.NAME);
-        Node hiddenNode = parentNode.getAttributes().getNamedItem(
-                Xml.Attributes.HIDDEN);
-
-        String hiddenString = null;
-
-        if (nameNode != null)
-        {
-            setName(nameNode.getNodeValue());
-        }
-
-        if (hiddenNode != null)
-        {
-            hiddenString = hiddenNode.getNodeValue();
-        }
-
-        setHidden(Boolean.parseBoolean(hiddenString));
+        parseCommonAttributes(parentNode, task);
 
         Node node = parentNode.getFirstChild();
 

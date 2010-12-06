@@ -149,6 +149,8 @@ public class RootTarget extends SubmissionTarget
     {
         startSubtaskForChildNodes(parentNode, task);
 
+        parseCommonAttributes(parentNode, task);
+
         Node node = parentNode.getFirstChild();
 
         List<String> includes = new ArrayList<String>();

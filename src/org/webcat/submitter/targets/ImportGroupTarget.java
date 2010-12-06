@@ -24,6 +24,8 @@ package org.webcat.submitter.targets;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Map;
+import java.util.Set;
+
 import org.w3c.dom.Node;
 import org.webcat.submitter.AmbiguityResolutionPolicy;
 import org.webcat.submitter.ILongRunningTask;
@@ -199,6 +201,23 @@ public class ImportGroupTarget extends SubmissionTarget
 
     // ----------------------------------------------------------
     /**
+     * @see SubmissionTarget#getLocalAttribute(String)
+     */
+    @Override
+    public String getLocalAttribute(String attribute)
+    throws SubmissionTargetException
+    {
+        if (!loaded)
+        {
+            loadImportedDefinitions();
+        }
+
+        return super.getLocalAttribute(attribute);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * @see SubmissionTarget#getLocalTransport()
      */
     @Override
@@ -282,37 +301,34 @@ public class ImportGroupTarget extends SubmissionTarget
 
     // ----------------------------------------------------------
     /**
+     * @see SubmissionTarget#getIgnoredAttributes()
+     */
+    protected Set<String> getIgnoredAttributes()
+    {
+    	Set<String> ignored = super.getIgnoredAttributes();
+    	ignored.add("href");
+
+    	return ignored;
+    }
+
+    
+    // ----------------------------------------------------------
+    /**
      * @see SubmissionTarget#parse(Node, ILongRunningTask)
      */
     @Override
     public void parse(Node parentNode, ILongRunningTask task)
     throws SubmissionTargetException
     {
-        Node nameNode = parentNode.getAttributes().getNamedItem(
-                Xml.Attributes.NAME);
-        Node refNode = parentNode.getAttributes().getNamedItem(
+        parseCommonAttributes(parentNode, task);
+
+    	Node hrefNode = parentNode.getAttributes().getNamedItem(
                 Xml.Attributes.HREF);
-        Node hiddenNode = parentNode.getAttributes().getNamedItem(
-                Xml.Attributes.HIDDEN);
 
-        String hiddenString = null;
-
-        if (nameNode != null)
+        if (hrefNode != null)
         {
-            setName(nameNode.getNodeValue());
+            href = hrefNode.getNodeValue();
         }
-
-        if (refNode != null)
-        {
-            href = refNode.getNodeValue();
-        }
-
-        if (hiddenNode != null)
-        {
-            hiddenString = hiddenNode.getNodeValue();
-        }
-
-        setHidden(Boolean.parseBoolean(hiddenString));
 
         task.doWork(1);
     }

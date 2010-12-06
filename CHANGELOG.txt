@@ -1,6 +1,12 @@
 Web-CAT Electronic Submitter Version History
 ============================================
 
+1.0.4 (2010-12-06):
+
+ * Added support for Ant-style file patterns (using "**" for multiple
+   directory matches) in the file inclusions, exclusions, and requirements.
+
+
 1.0.3 (2010-11-04):
 
  * Internal change: SubmittableFile.getFilename() now always returns a

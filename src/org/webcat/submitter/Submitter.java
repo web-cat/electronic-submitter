@@ -30,14 +30,16 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.webcat.submitter.internal.DefaultLongRunningTaskManager;
 import org.webcat.submitter.internal.LongRunningTask;
 import org.webcat.submitter.internal.SubmissionParserErrorHandler;
-import org.webcat.submitter.internal.utility.FilePattern;
+import org.webcat.submitter.internal.utility.PathMatcher;
 import org.webcat.submitter.targets.AssignmentTarget;
 import org.webcat.submitter.targets.RootTarget;
 import org.webcat.submitter.targets.SubmissionTarget;
@@ -454,7 +456,7 @@ public class Submitter
                 {
                     for (String reqPattern : patterns)
                     {
-                        FilePattern pattern = new FilePattern(reqPattern);
+                        PathMatcher pattern = new PathMatcher(reqPattern);
 
                         if (pattern.matches(item.getFilename()))
                         {

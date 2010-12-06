@@ -488,7 +488,6 @@ public class SubmissionManifest
                     if (!assignment.isFileExcluded(item.getFilename()))
                     {
                         packager.addSubmittableItem(item);
-                        Thread.sleep(500);
                     }
                 }
                 catch (Exception e)

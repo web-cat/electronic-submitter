@@ -24,15 +24,18 @@ package org.webcat.submitter.targets;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.w3c.dom.Node;
 import org.webcat.submitter.AmbiguityResolutionPolicy;
 import org.webcat.submitter.ILongRunningTask;
 import org.webcat.submitter.SubmissionTargetException;
 import org.webcat.submitter.internal.Xml;
-import org.webcat.submitter.internal.utility.FilePattern;
+import org.webcat.submitter.internal.utility.PathMatcher;
 
 //--------------------------------------------------------------------------
 /**
@@ -66,6 +69,8 @@ public abstract class SubmissionTarget
 
         transportParams = new LinkedHashMap<String, String>();
         packagerParams = new LinkedHashMap<String, String>();
+        
+        otherAttributes = new LinkedHashMap<String, String>();
     }
 
 
@@ -345,6 +350,77 @@ public abstract class SubmissionTarget
         {
             parent.getAllRequiredFiles(list);
         }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the value of an attribute for submission targets at this level in
+     * the tree. This function walks up the tree to find an inherited
+     * attribute, if necessary.
+     *
+     * @param attribute the name of the attribute
+     * @return a String containing the value of the attribute, or null if it
+     *     is not present
+     * @throws SubmissionTargetException if an error occurs while delay-loading
+     *     the node
+     */
+    public String getAttribute(String attribute)
+    	throws SubmissionTargetException
+    {
+        String localAttribute = getLocalAttribute(attribute);
+
+        if (localAttribute != null)
+        {
+            return localAttribute;
+        }
+        else if (parent != null)
+        {
+            return parent.getAttribute(attribute);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets the value of an attribute for submission targets at this level in
+     * the tree. This function does not walk up the tree to find an inherited
+     * attribute--it returns the attribute specified for this node only.
+     *
+     * @param attribute the name of the attribute
+     * @return a String containing the value of the attribute, or null if it
+     *     is not present
+     * @throws SubmissionTargetException if an error occurs while delay-loading
+     *     the node
+     */
+    public String getLocalAttribute(String attribute)
+        throws SubmissionTargetException
+    {
+        return otherAttributes.get(attribute);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sets an attribute for this node.
+     *
+     * @param attribute the name of the attribute
+     * @param value the value for the attribute
+     */
+    public void setAttribute(String attribute, String value)
+    {
+    	if (value != null)
+    	{
+    		otherAttributes.put(attribute, value);
+    	}
+    	else
+    	{
+    		otherAttributes.remove(attribute);
+    	}
     }
 
 
@@ -737,7 +813,7 @@ public abstract class SubmissionTarget
         String[] exc = getExcludedFiles();
         for (String patternString : exc)
         {
-            if (new FilePattern(patternString).matches(packageRelativePath))
+            if (new PathMatcher(patternString).matches(packageRelativePath))
             {
                 localExclude = true;
                 break;
@@ -749,7 +825,7 @@ public abstract class SubmissionTarget
         String[] inc = getIncludedFiles();
         for (String patternString : inc)
         {
-            if (new FilePattern(patternString).matches(packageRelativePath))
+            if (new PathMatcher(patternString).matches(packageRelativePath))
             {
                 localInclude = true;
                 break;
@@ -829,6 +905,25 @@ public abstract class SubmissionTarget
         setPackager(target.getPackager());
         setPackagerParameters(target.getPackagerParameters());
     }
+    
+    
+    // ----------------------------------------------------------
+    /**
+     * Gets a set of attribute names that should not be included in the
+     * attribute set used by {@link #getAttribute(String)} and related
+     * methods.
+     * 
+     * @return the set of attribute names that should not be included in the
+     *     target's attribute set
+     */
+    protected Set<String> getIgnoredAttributes()
+    {
+    	Set<String> ignored = new HashSet<String>();
+    	ignored.add("name");
+    	ignored.add("hidden");
+
+    	return ignored;
+    }
 
 
     // ----------------------------------------------------------
@@ -858,6 +953,53 @@ public abstract class SubmissionTarget
      */
     public abstract void parse(Node node, ILongRunningTask task)
     throws SubmissionTargetException;
+
+
+    // ----------------------------------------------------------
+    /**
+     * Parses the common attributes for the specified XML node and adds them
+     * to the target.
+     * 
+     * @param node the XML document node to parse from
+     * @param task the long-running task to run under
+     * @throws SubmissionTargetException if any errors occurred during parsing
+     */
+    protected void parseCommonAttributes(Node node, ILongRunningTask task)
+    throws SubmissionTargetException
+    {
+        Node nameNode = node.getAttributes().getNamedItem(
+                Xml.Attributes.NAME);
+        Node hiddenNode = node.getAttributes().getNamedItem(
+                Xml.Attributes.HIDDEN);
+
+        String hiddenString = null;
+
+        if (nameNode != null)
+        {
+            setName(nameNode.getNodeValue());
+        }
+
+        if (hiddenNode != null)
+        {
+            hiddenString = hiddenNode.getNodeValue();
+        }
+
+        setHidden(Boolean.parseBoolean(hiddenString));
+
+        Set<String> ignored = getIgnoredAttributes();
+
+        for (int i = 0; i < node.getAttributes().getLength(); i++)
+        {
+        	Node attribute = node.getAttributes().item(i);
+        	String attributeName = attribute.getNodeName();
+        	
+        	if (!ignored.contains(attributeName))
+        	{
+        		String value = attribute.getNodeValue();
+        		otherAttributes.put(attributeName, value);
+        	}
+        }
+    }
 
 
     // ----------------------------------------------------------
@@ -1403,6 +1545,10 @@ public abstract class SubmissionTarget
     /* A table of name-value pairs that represent additional parameters that
        are passed to the packager. */
     private LinkedHashMap<String, String> packagerParams;
+
+    /* Other attributes associated with a submission target (such as file
+       size limits). */
+    private LinkedHashMap<String, String> otherAttributes;
 
     /* The list of child nodes to this node in the submission target tree. */
     private SubmissionTarget[] children;
