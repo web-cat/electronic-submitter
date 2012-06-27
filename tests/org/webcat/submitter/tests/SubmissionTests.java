@@ -23,12 +23,14 @@ package org.webcat.submitter.tests;
 
 import static org.junit.Assert.assertEquals;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.webcat.submitter.ISubmittableItem;
+import org.webcat.submitter.IdentityStringEncoder;
 import org.webcat.submitter.NoItemsToSubmitException;
 import org.webcat.submitter.ProtocolRegistry;
 import org.webcat.submitter.RequiredItemsMissingException;
@@ -136,6 +138,8 @@ public class SubmissionTests
                 "Test Group/Test Assignment");
         requiresAssignment = (AssignmentTarget) submitter.getTarget(
                 "Test Group/Test Requires");
+        passwordAssignment = (AssignmentTarget) submitter.getTarget(
+                "Test Group/Password Test");
     }
 
 
@@ -284,6 +288,33 @@ public class SubmissionTests
 
     // ----------------------------------------------------------
     /**
+     * Tests that parameter substitution works if a parameter (such as a
+     * password) has a dollar sign in it.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void passwordCanContainDollars() throws Exception
+    {
+        SubmissionManifest manifest = new SubmissionManifest();
+        manifest.setAssignment(passwordAssignment);
+        manifest.setSubmittableItems(new ISubmittableItem[0]);
+        manifest.setUsername("dummy");
+        manifest.setPassword("p4$$w0rd");
+
+        URI transport = manifest.getResolvedTransport(
+        		new IdentityStringEncoder());
+        
+        assertEquals("mock:mock?username=dummy&password=p4$$w0rd&foo=bar",
+        		transport.toString());
+
+        assertEquals("p4$$w0rd", manifest.resolveParameters(
+        		"${pw}", new IdentityStringEncoder()));
+    }
+
+
+    // ----------------------------------------------------------
+    /**
      * A helper method to perform the actual submission to a ZIP archive and
      * then return a map containing its entries, where the keys are the names
      * of the entries and the values are strings representing the file content
@@ -310,6 +341,7 @@ public class SubmissionTests
     private Submitter submitter;
     private AssignmentTarget assignment;
     private AssignmentTarget requiresAssignment;
+    private AssignmentTarget passwordAssignment;
 
     /* Mock items for testing. */
     private static MockSubmittableItem singleItem;

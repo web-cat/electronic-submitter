@@ -10,5 +10,11 @@
             <packager id="org.webcat.submitter.packagers.zip"/>
             <transport uri="mock:mock"/>
         </assignment>
+        <assignment name="Password Test">
+            <packager id="org.webcat.submitter.packagers.zip"/>
+            <transport uri="mock:mock?username=${user}&amp;password=${pw}&amp;foo=bar">
+                <param name="pass" value="${pw}"/>
+            </transport>
+        </assignment>
     </assignment-group>
 </submission-targets>
