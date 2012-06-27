@@ -24,6 +24,8 @@ package org.webcat.submitter.targets;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.w3c.dom.Node;
 import org.webcat.submitter.ILongRunningTask;
 import org.webcat.submitter.SubmissionTargetException;
@@ -99,6 +101,62 @@ public class AssignmentTarget extends SubmissionTarget
     {
         return true;
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Gets a value indicating whether the receiving assignment uses the
+     * specified parameter placeholder in any of its packager or transport
+     * parameters, or in the transport URI itself.
+     * 
+     * @param parameter the parameter to search for
+     * @return true if the parameter is used by the receiver, otherwise false
+     */
+    public boolean usesParameter(String parameter)
+    {
+		String paramSub = "${" + parameter + "}";
+
+		try
+		{
+			Map<String, String> params;
+	
+			params = getPackagerParameters();
+			
+			for (Map.Entry<String, String> paramEntry : params.entrySet())
+			{
+				if (paramEntry.getValue().contains(paramSub))
+				{
+					return true;
+				}
+			}
+
+			params = getTransportParameters();
+			
+			for (Map.Entry<String, String> paramEntry : params.entrySet())
+			{
+				if (paramEntry.getValue().contains(paramSub))
+				{
+					return true;
+				}
+			}
+			
+			String transport = getTransport();
+			
+			if (transport.contains(paramSub))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch (SubmissionTargetException e)
+		{
+			return false;
+		}    	
+    }
+
 
     // ----------------------------------------------------------
     /**

@@ -193,7 +193,8 @@
                debuglevel="${debuglevel}"
                destdir="bin"
                source="${source}"
-               target="${target}">
+               target="${target}"
+               includeantruntime="false">
             <src path="src" />
             <classpath refid="${project.name}.classpath" />
         </javac>
@@ -208,7 +209,8 @@
                debuglevel="${debuglevel}"
                destdir="tests-bin"
                source="${source}"
-               target="${target}">
+               target="${target}"
+               includeantruntime="false">
             <src path="tests" />
             <classpath refid="${project.name}.classpath.tests" />
         </javac>

@@ -1,6 +1,11 @@
 Web-CAT Electronic Submitter Version History
 ============================================
 
+1.0.5 (2012-06-27):
+
+ * Minor API change (added `AssignmentTarget.usesParameter`).
+
+ 
 1.0.4 (2010-12-06):
 
  * Added support for Ant-style file patterns (using "**" for multiple
